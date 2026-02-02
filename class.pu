@@ -1,0 +1,52 @@
+@startuml classDiagram
+
+class Library {
+    - books : List<Book>
+    - users : List<User>
+    - activeLoans : List<Loan>
+    + addBook(book : Book)
+    + registerUser(user : User)
+    + lendBook(user : User, book : Book) : Loan
+    + returnBook(loan : Loan)
+    + searchBook(isbn : String) : Book
+    + getUserLoans(user : User) : List<Loan>
+}
+
+class Book {
+    - title : String
+    - author : String
+    - isbn : String
+    + getTitle() : String
+    + getAuthor() : String
+    + getISBN() : String
+    + isAvailable() : boolean
+}
+
+class User {
+    - name : String
+    - memberId : String
+    + getName() : String
+    + getMemberId() : String
+}
+
+class Loan {
+    - book : Book
+    - user : User
+    - loanDate : Date
+    - dueDate : Date
+    - returnDate : Date
+    + isOverdue() : boolean
+    + isActive() : boolean
+    + returnBook()
+}
+
+Library "1" o-- "*" Book : 管理する
+Library "1" o-- "*" User : 管理する
+Library "1" *-- "*" Loan : 管理する
+Loan "*" --> "1" Book : 対象
+Loan "*" --> "1" User : 借主
+
+note for Loan "貸出という「行為」を\nオブジェクトとして表現"
+note for Library "貸出・返却の\n管理を担当"
+
+@enduml
